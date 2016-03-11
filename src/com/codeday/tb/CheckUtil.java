@@ -9,6 +9,8 @@ import java.util.Arrays;
  * 校验工具类 加密/校验流程如下： 1. 将token、timestamp、nonce三个参数进行字典序排序 2.
  * 将三个参数字符串拼接成一个字符串进行sha1加密 3. 开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
  * 
+ * 
+ * 
  * @author liuxf
  * 
  */
@@ -55,6 +57,16 @@ public class CheckUtil {
 			return new String(buf);
 		} catch (Exception e) {
 			return null;
+		}
+	}
+	
+	
+	public static void main(String[] args) {
+		String[] array = new String[] {"b","a","g","c"};
+		// 1.字典排序
+		Arrays.sort(array);
+		for(int i=0;i<array.length;i++){
+			System.out.print(array[i]);
 		}
 	}
 }

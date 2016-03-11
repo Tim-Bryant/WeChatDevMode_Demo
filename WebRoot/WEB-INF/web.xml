@@ -12,6 +12,16 @@
 		<display-name>微信接入测试Servlet</display-name>
 		<servlet-name>WeixinServlet</servlet-name>
 		<servlet-class>com.codeday.tb.WeixinServlet</servlet-class>
+		<!-- 配置获取access_token所需参数appid和appsecret -->
+		<init-param>
+			<param-name>appid</param-name>
+			<param-value>wxc2c53ea17f525cd9</param-value>
+		</init-param>
+		<init-param>
+			<param-name>appsecret</param-name>
+			<param-value>7ce3e27b719ff524e31bb250d9f24dc9</param-value>
+		</init-param>
+		<load-on-startup>0</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>WeixinServlet</servlet-name>

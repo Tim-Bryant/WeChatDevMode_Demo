@@ -86,6 +86,29 @@ public class MessageUtil {
 	}
 
 	/**
+	 * 将地址位置消息对象转化为微信需要的XML信息 添加了xtream-1.3.1.jar(提供将对象转为xml方法) <xml> <xml>
+	 * <ToUserName><![CDATA[toUser]]></ToUserName>
+	 * <FromUserName><![CDATA[fromUser]]></FromUserName>
+	 * <CreateTime>1351776360</CreateTime>
+	 * <MsgType><![CDATA[location]]></MsgType>
+	 * <Location_X>23.134521</Location_X> <Location_Y>113.358803</Location_Y>
+	 * <Scale>20</Scale> <Label><![CDATA[位置信息]]></Label>
+	 * <MsgId>1234567890123456</MsgId> </xml>
+	 * 
+	 * @param request
+	 * @return
+	 * @throws DocumentException
+	 * @throws IOException
+	 */
+	public static String locationMessageToXml(LocationMessage locationMessage) {
+		XStream stream = new XStream();
+		// 默认根元素会以包名做根元素，微信的要求是xml,故需要將根元素替換
+		stream.alias("xml", locationMessage.getClass());
+		String xml = stream.toXML(locationMessage);
+		return xml;
+	}
+
+	/**
 	 * 拼接消息
 	 * 
 	 * @param toUserName
