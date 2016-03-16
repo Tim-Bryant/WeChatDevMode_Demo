@@ -2,6 +2,7 @@ package com.codeday.tb;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,10 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import com.codeday.tb.domain.LocationMessage;
+import com.codeday.tb.domain.News;
+import com.codeday.tb.domain.NewsMessage;
+import com.codeday.tb.domain.TextMessage;
 import com.thoughtworks.xstream.XStream;
 
 /**
@@ -29,6 +34,7 @@ public class MessageUtil {
 	 */
 	public static final String MESSAGE_TEXT = "text"; // 文本
 	public static final String MESSAGE_IMAGE = "image"; // 图片
+	public static final String MESSAGE_NEWS = "news"; // 图文
 	public static final String MESSAGE_VOICE = "voice"; // 语音
 	public static final String MESSAGE_VIDEO = "video";// 视频
 	public static final String MESSAGE_LINK = "link";// 链接
@@ -168,4 +174,50 @@ public class MessageUtil {
 		return stringBuffer.toString();
 
 	}
+
+	/**
+	 * 图文消息对象转换为XML
+	 * 
+	 * @param newsMessage
+	 * @return
+	 */
+	public static String newsMessageToXml(NewsMessage newsMessage) {
+		XStream stream = new XStream();
+		// 默认根元素会以包名做根元素，微信的要求是xml,故需要將根元素替換
+		stream.alias("xml", newsMessage.getClass());
+		stream.alias("item", new News().getClass());
+		String xml = stream.toXML(newsMessage);
+		return xml;
+	}
+
+	/**
+	 * 图文消息的组装
+	 * 
+	 * @param toUserName
+	 * @param fromUserName
+	 * @return
+	 */
+	public static String initNewsMessage(String toUserName, String fromUserName) {
+		String message = null;
+		List<News> newsList = new ArrayList<News>();
+		NewsMessage newsMessage = new NewsMessage();
+		News news = new News();
+		news.setTitle("慕课网介绍");
+		news.setDescription("慕课网是垂直的互联网IT技能免费学习网站。以独家视频教程、在线编程工具、学习计划、问答社区为核心特色。在这里，你可以找到最好的互联网技术牛人，也可以通过免费的在线公开视频课程学习国内领先的互联网IT技术。");
+		news.setPicUrl("http://timbryant.tunnel.qydev.com/weixin/images/test.jpg");
+		news.setUrl("http://timbryant.tunnel.qydev.com/weixin/index.jsp");
+		newsList.add(news);
+
+		newsMessage.setFromUserName(toUserName);
+		newsMessage.setToUserName(fromUserName);
+		newsMessage.setCreateTime(new Date().getTime());
+		newsMessage.setMsgType(MessageUtil.MESSAGE_NEWS);
+		newsMessage.setArticles(newsList);
+		newsMessage.setArticleCount(newsList.size());
+
+		message = newsMessageToXml(newsMessage);
+		System.out.println(message);
+		return message;
+	}
+
 }

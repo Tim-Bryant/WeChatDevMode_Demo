@@ -15,9 +15,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.codeday.tb.domain.LocationMessage;
+import com.codeday.tb.domain.TextMessage;
 import com.codeday.tb.util.HttpRequest;
 import com.codeday.tb.util.TokenThread;
 import com.codeday.tb.util.WeixinUtil;
@@ -93,7 +97,7 @@ public class WeixinServlet extends HttpServlet {
 				if ("1".equals(Content)) {
 					message = MessageUtil.initText(ToUserName, FromUserName, MessageUtil.firstText());
 				} else if ("2".equals(Content)) {
-					message = MessageUtil.initText(ToUserName, FromUserName, MessageUtil.secondText());
+					message = MessageUtil.initNewsMessage(ToUserName, FromUserName);
 				} else if ("？".equals(Content) || "?".equals(Content)) {
 					message = MessageUtil.initText(ToUserName, FromUserName, MessageUtil.menuText());
 				} else {
@@ -139,6 +143,8 @@ public class WeixinServlet extends HttpServlet {
 				}
 
 			}
+
+			// response.sendRedirect("http://www.baidu.com");
 			out.print(message);
 		} catch (DocumentException e) {
 			e.printStackTrace();
